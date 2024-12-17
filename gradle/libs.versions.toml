@@ -15,6 +15,8 @@ coil3 = "3.0.4"
 googleKsp = "2.0.21-1.0.27"
 retrofit = "2.11.0"
 mockk = "1.13.13"
+constraintLayout = "1.0.1"
+googleBrowserHelper = "2.4.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,6 +33,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintLayout" }
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "daggerHilt" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "androidPaging" }
@@ -41,9 +44,11 @@ androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "ro
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 coil3-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
 coil3-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil3" }
+coil3-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil3" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
-mockk = { module = "io.mockk:mockk", version.ref = "mockk"}
+google-browserhelper = { module = "com.google.androidbrowserhelper:androidbrowserhelper", version.ref = "googleBrowserHelper" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

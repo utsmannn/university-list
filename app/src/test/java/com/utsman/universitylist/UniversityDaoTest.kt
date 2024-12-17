@@ -18,8 +18,8 @@ class UniversityDaoTest {
     @Test
     fun testGetAllUniversities() = runBlocking {
         val expectedData = listOf(
-            UniversityEntity(1, "Univ bagus", "https://bagus.com", "https://image.png"),
-            UniversityEntity(1, "Univ keren", "https://keren.com", "https://image.png"),
+            UniversityEntity(1, "Univ bagus", "bagus.com","https://bagus.com", "https://image.png"),
+            UniversityEntity(2, "Univ keren", "keren.com", "https://keren.com", "https://image.png")
         )
 
         val mockPagingSources = PagingSource.LoadResult.Page(
@@ -48,7 +48,7 @@ class UniversityDaoTest {
     fun testSearchUniversityByName() = runBlocking {
         val searchQuery = "bagus"
         val expectedData = listOf(
-            UniversityEntity(1, "Univ bagus", "https://bagus.com", "https://image.png")
+            UniversityEntity(1, "Univ bagus", "bagus.com","https://bagus.com", "https://image.png")
         )
 
         val mockPagingSources = PagingSource.LoadResult.Page(
@@ -76,8 +76,8 @@ class UniversityDaoTest {
     @Test
     fun testInsertUniversities() = runBlocking {
         val universities = listOf(
-            UniversityEntity(1, "Univ bagus", "https://bagus.com", "https://image.png"),
-            UniversityEntity(1, "Univ keren", "https://keren.com", "https://image.png"),
+            UniversityEntity(1, "Univ bagus", "bagus.com","https://bagus.com", "https://image.png"),
+            UniversityEntity(2, "Univ keren", "keren.com", "https://keren.com", "https://image.png")
         )
 
         coEvery { mockDao.insertUniversities(universities) } returns Unit
