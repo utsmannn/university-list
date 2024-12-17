@@ -13,6 +13,8 @@ androidPaging = "3.3.5"
 room = "2.6.1"
 coil3 = "3.0.4"
 googleKsp = "2.0.21-1.0.27"
+retrofit = "2.11.0"
+mockk = "1.13.13"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,16 +36,20 @@ dagger-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", ver
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "androidPaging" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidPaging" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 coil3-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
 coil3-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil3" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
-google-ksp = { id = "com.google.devtools.ksp", version.ref = "googleKsp"}
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "googleKsp" }
 
 
