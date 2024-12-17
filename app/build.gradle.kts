@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    implementation(libs.androidx.constraintlayout.compose)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
@@ -90,5 +91,8 @@ dependencies {
 
     implementation(libs.coil3.compose)
     implementation(libs.coil3.okhttp)
+    implementation(libs.coil3.svg)
+
+    implementation(libs.google.browserhelper)
 
 }

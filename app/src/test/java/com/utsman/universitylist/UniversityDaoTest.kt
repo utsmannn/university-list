@@ -19,8 +19,8 @@ class UniversityDaoTest {
     @Test
     fun `Should getAllUniversities successfully`() = runBlocking {
         val expectedData = listOf(
-            UniversityEntity(1, "Univ bagus", "https://bagus.com", "https://image.png"),
-            UniversityEntity(2, "Univ keren", "https://keren.com", "https://image.png")
+            UniversityEntity(1, "Univ bagus", "bagus.com","https://bagus.com", "https://image.png"),
+            UniversityEntity(2, "Univ keren", "keren.com", "https://keren.com", "https://image.png")
         )
 
         val mockPagingSource = PagingSource.LoadResult.Page(
@@ -49,7 +49,7 @@ class UniversityDaoTest {
     fun `Should return matching result on searchUniversityByName`() = runBlocking {
         val searchQuery = "bagus"
         val expectedData = listOf(
-            UniversityEntity(1, "Univ bagus", "https://bagus.com", "https://image.png")
+            UniversityEntity(1, "Univ bagus", "bagus.com","https://bagus.com", "https://image.png")
         )
 
         val mockPagingSource = PagingSource.LoadResult.Page(
@@ -104,8 +104,8 @@ class UniversityDaoTest {
     @Test
     fun `Should insertUniversities successfully`() = runBlocking {
         val universities = listOf(
-            UniversityEntity(1, "Univ bagus",  "https://bagus.com", "https://image.png"),
-            UniversityEntity(2, "Univ keren", "https://keren.com", "https://image.png")
+            UniversityEntity(1, "Univ bagus", "bagus.com","https://bagus.com", "https://image.png"),
+            UniversityEntity(2, "Univ keren", "keren.com", "https://keren.com", "https://image.png")
         )
 
         coEvery { mockDao.insertUniversities(universities) } returns Unit

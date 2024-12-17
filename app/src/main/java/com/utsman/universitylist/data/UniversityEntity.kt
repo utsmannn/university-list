@@ -9,6 +9,7 @@ data class UniversityEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,
+    val domain: String,
     @ColumnInfo(name = "web_page")
     val webPage: String,
     @ColumnInfo(name = "image_url")

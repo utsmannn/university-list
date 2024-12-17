@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">University List</string>
+    <string name="search_bar_hint">Search University</string>
 </resources>
