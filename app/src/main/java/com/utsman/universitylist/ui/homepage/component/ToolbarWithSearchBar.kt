@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.utsman.universitylist.R
@@ -46,6 +47,8 @@ fun ToolbarWithSearchBar(
         label = "animation_drop_shadow"
     )
 
+
+
     Column {
         SearchBar(
             modifier = Modifier
@@ -60,8 +63,8 @@ fun ToolbarWithSearchBar(
                         textFieldQuery = it
                     },
                     onSearch = {
-                        expanded = false
                         onSearch.invoke(textFieldQuery)
+                        expanded = false
                     },
                     expanded = expanded,
                     onExpandedChange = {
@@ -71,6 +74,11 @@ fun ToolbarWithSearchBar(
                     leadingIcon = {
                         IconButton(
                             onClick = {
+                                if (expanded) {
+                                    textFieldQuery = ""
+                                    onSearch.invoke("")
+                                }
+
                                 expanded = !expanded
                             }
                         ) {
@@ -94,7 +102,10 @@ fun ToolbarWithSearchBar(
             expanded = expanded,
             onExpandedChange = {
                 expanded = it
-            }
+            },
+            colors = SearchBarDefaults.colors(
+                containerColor = Color.Blue
+            )
         ) {
 
             // history search

@@ -32,20 +32,6 @@ fun HomePage(
     homeViewModel: HomeViewModel = viewModel()
 ) {
 
-    val dummyListUniversity = remember {
-        listOf(
-            University("Univ bagus", "bagus.com","https://bagus.com", "https://placehold.co/600x400/orange/white"),
-            University("Univ keren", "keren.com", "https://keren.com", "https://placehold.co/600x400/orange/blue"),
-            University("Univ cakep", "cakep.com", "https://keren.com", "https://placehold.co/600x400/orange/red"),
-            University( "Univ bagus 1", "bagus.com","https://bagus.com", "https://placehold.co/600x400/orange/yellow"),
-            University("Univ keren 1", "keren.com", "https://keren.com", "https://placehold.co/600x400/orange/pink"),
-            University("Univ cakep 1", "cakep.com", "https://keren.com", "https://placehold.co/600x400/orange/orange"),
-            University("Univ bagus 2", "bagus.com","https://bagus.com", "https://placehold.co/600x400/orange/white"),
-            University( "Univ keren 2", "keren.com", "https://keren.com", "https://placehold.co/600x400/orange/blue"),
-            University("Univ cakep 2", "cakep.com", "https://keren.com", "https://placehold.co/600x400/orange/red")
-        )
-    }
-
     val universitiesPaged = homeViewModel.universities.collectAsLazyPagingItems()
 
     val context = LocalContext.current
@@ -61,7 +47,7 @@ fun HomePage(
                 modifier = Modifier,
                 showShadow = !isScrollReachTop,
                 onSearch = {
-                    // search here
+                    homeViewModel.search(it)
                 }
             )
         },
@@ -90,17 +76,6 @@ fun HomePage(
                             }
                         }
                     }
-
-
-//                    items(dummyListUniversity) { item ->
-//                        UniversityItemContent(
-//                            modifier = Modifier.fillMaxWidth(),
-//                            university = item,
-//                            onClick = {
-//                                launchCustomTab(context, item.webPage)
-//                            }
-//                        )
-//                    }
                 }
 
             }
