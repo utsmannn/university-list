@@ -1,5 +1,10 @@
 package com.utsman.universitylist.data
 
+
+/**
+ * Extension function to map [UniversityResponse] to [UniversityEntity].
+ * Ensures non-null values by providing default empty strings where necessary.
+ */
 fun UniversityResponse.mapToEntity(): UniversityEntity {
     return UniversityEntity(
         name = this.name.orEmpty(),
@@ -9,11 +14,17 @@ fun UniversityResponse.mapToEntity(): UniversityEntity {
     )
 }
 
+/**
+ * Extension function to map [UniversityEntity] to [University] DTO.
+ */
 fun UniversityEntity.mapToDto(): University {
     return University(name, domain, webPage, imageUrl)
 }
 
-
+/**
+ * Generates a list of color combinations for background and text
+ * for image generator.
+ */
 fun generateColorCombinations(): List<String> {
     val colors = listOf(
         "red", "blue", "green", "yellow", "orange", "purple", "pink", "black", "white", "gray"
@@ -30,6 +41,10 @@ fun generateColorCombinations(): List<String> {
     return combinations
 }
 
+
+/**
+ * Generates a placeholder image URL with randomized background colors and text.
+ */
 fun generateImageUrl(text: String): String {
     val simplifyText = text.split(" ")
         .mapNotNull { it.firstOrNull() }

@@ -21,14 +21,24 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import retrofit2.Response
 
+
+/**
+ * Unit tests for the [UniversityRepository] class.
+ */
 class UniversityRepositoryTest {
 
     private val mockDao = mockk<UniversityDao>()
     private val mockApiService = mockk<UniversityApiService>()
     private val mockDataStore = mockk<DataStore<Preferences>>()
+
+    // Instance of UniversityRepository with mocked dependencies
     private val repository = UniversityRepository(mockDao, mockApiService, mockDataStore)
 
+    /**
+     * Tests that [UniversityRepository.getUniversityPaging] returns the correct paging data.
+     */
     @Test
     fun `Should return paging data from getUniversityPaging`() = runTest {
         val expectedData = listOf(
@@ -36,6 +46,7 @@ class UniversityRepositoryTest {
             UniversityEntity(2, "Univ keren", "keren.com", "https://keren.com", "https://image.png")
         )
 
+        // Mocking the PagingSource
         val mockPagingSource = object : PagingSource<Int, UniversityEntity>() {
             override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UniversityEntity> {
                 return LoadResult.Page(
@@ -52,16 +63,22 @@ class UniversityRepositoryTest {
 
         coEvery { mockDao.getAllUniversities() } returns mockPagingSource
 
+        // Create Pager instance
         val pager = Pager(
             config = PagingConfig(pageSize = 10),
             pagingSourceFactory = { mockDao.getAllUniversities() }
         )
 
+        // Collect the first page of data
         val result = flowOf(pager.flow.first()).asSnapshot()
 
+        // Assert that the returned data matches expected data
         assertEquals(expectedData, result)
     }
 
+    /**
+     * Tests that [UniversityRepository.searchUniversityPaging] returns the correct filtered paging data.
+     */
     @Test
     fun `Should return paging data from searchUniversityPaging`() = runTest {
         val query = "cakep"
@@ -95,8 +112,12 @@ class UniversityRepositoryTest {
         assertEquals(expectedData.map { it.name }, result.map { it.name })
     }
 
+    /**
+     * Tests that [UniversityRepository.fetchAndSaveUniversities] fetches from API and saves to DB when DB is empty.
+     */
     @Test
     fun `Should fetch and save universities when database is empty`() = runTest {
+        // Mocking an empty database
         coEvery { mockDao.getAllUniversities() } returns mockk<PagingSource<Int, UniversityEntity>> {
             coEvery { load(any()) } returns PagingSource.LoadResult.Page(
                 data = emptyList(),
@@ -118,12 +139,16 @@ class UniversityRepositoryTest {
 
         val expectedEntities = apiResponse.map { it.mapToEntity() }
 
-        coEvery { mockApiService.getUniversities() } returns apiResponse
+        // Mocking API response and DB insert
+        coEvery { mockApiService.getUniversities() } returns Response.success(apiResponse)
         coEvery { mockDao.insertUniversities(any()) } returns Unit
 
+        // Invoke the method under test
         repository.fetchAndSaveUniversities()
 
         coVerify { mockApiService.getUniversities() }
+
+        // Verify that the API was called and data was inserted into database
         coVerify { mockDao.insertUniversities(match { entities ->
             entities.zip(expectedEntities).all { (actual, expected) ->
                 actual.name == expected.name &&
@@ -133,6 +158,9 @@ class UniversityRepositoryTest {
         }) }
     }
 
+    /**
+     * Tests that [UniversityRepository.fetchAndSaveUniversities] does not fetch from API when DB is not empty.
+     */
     @Test
     fun `Should not fetch from API when database is not empty`() = runTest {
         coEvery { mockDao.getAllUniversities() } returns mockk<PagingSource<Int, UniversityEntity>> {
@@ -147,6 +175,7 @@ class UniversityRepositoryTest {
 
         repository.fetchAndSaveUniversities()
 
+        // Verify that the API was not called and data was not inserted
         coVerify(exactly = 0) { mockApiService.getUniversities() }
         coVerify(exactly = 0) { mockDao.insertUniversities(any()) }
     }

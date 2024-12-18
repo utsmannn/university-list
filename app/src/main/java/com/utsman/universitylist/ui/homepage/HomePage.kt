@@ -1,5 +1,6 @@
 package com.utsman.universitylist.ui.homepage
 
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -37,6 +39,12 @@ import com.utsman.universitylist.utils.FakePutRecentSearchUseCase
 import com.utsman.universitylist.utils.launchCustomTab
 import kotlinx.coroutines.launch
 
+
+/**
+ * [HomePage] composable that displays the list of universities and handles search functionality.
+ *
+ * @param homeViewModel The ViewModel managing the UI state and data.
+ */
 @Composable
 fun HomePage(
     homeViewModel: HomeViewModel = viewModel()
@@ -44,17 +52,34 @@ fun HomePage(
 
     val context = LocalContext.current
 
+    // Collect the paginated list of universities
     val universitiesPaged = homeViewModel.universities.collectAsLazyPagingItems()
+
+    // Collect the list of recent search queries
     val recentSearch by homeViewModel.recentSearch.collectAsState()
+
+    // Flag to indicate if the current view is showing search results
     val isSearchResult by homeViewModel.isSearchResult.collectAsState()
 
+    val errorMessage by homeViewModel.errorMessage.collectAsState()
+
+    // State of the lazy list to manage scroll position
     val lazyListState = rememberLazyListState()
+
+    // Determine if the list has scrolled away from the top
     val isScrollReachTop by remember {
         derivedStateOf { lazyListState.firstVisibleItemScrollOffset == 0 }
     }
 
     val scope = rememberCoroutineScope()
 
+    LaunchedEffect(key1 = errorMessage) {
+        if (errorMessage != null) {
+            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Handle back press when in search result mode
     BackHandler(isSearchResult) {
         scope.launch {
             homeViewModel.setIsSearchResult(false)
@@ -89,6 +114,7 @@ fun HomePage(
                 modifier = Modifier.padding(innerPadding)
             ) {
 
+                // Display loading or error state based on the refresh load state
                 universitiesPaged.apply {
                     when (loadState.refresh) {
                         is LoadState.Loading -> {
@@ -104,6 +130,7 @@ fun HomePage(
                     }
                 }
 
+                // LazyColumn to display the list of universities
                 LazyColumn(
                     contentPadding = PaddingValues(12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -120,11 +147,13 @@ fun HomePage(
                                 modifier = Modifier.fillMaxWidth(),
                                 university = university
                             ) {
+                                // Launch the university's web page in a cutom tab
                                 launchCustomTab(context, university.webPage)
                             }
                         }
                     }
 
+                    // Display loading or error state based on the append load state
                     universitiesPaged.apply {
                         when (loadState.append) {
                             is LoadState.Loading -> {
@@ -150,6 +179,9 @@ fun HomePage(
     )
 }
 
+/**
+ * Composable displaying a loading indicator.
+ */
 @Composable
 fun LoadingItem() {
     Box(
@@ -162,6 +194,11 @@ fun LoadingItem() {
     }
 }
 
+/**
+ * Composable displaying an error message.
+ *
+ * @param message The error message to display.
+ */
 @Composable
 fun ErrorItem(message: String) {
     Box(
@@ -179,7 +216,7 @@ fun ErrorItem(message: String) {
 }
 
 /**
- * Preview of the HomePage composable.
+ * Preview of the [HomePage] composable with fake use cases.
  */
 @Composable
 @Preview(showBackground = true)

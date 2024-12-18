@@ -25,30 +25,47 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
+
+/**
+ * Unit tests for the [HomeViewModel] class.
+ */
 class UniversityViewModelTest {
 
+    // Test dispatcher for controlling coroutine execution
     private val dispatcher = StandardTestDispatcher()
 
+    // Mocked use cases
     private val mockGetUniversityUseCase: GetUniversityUseCaseImpl = mockk<GetUniversityUseCaseImpl>()
     private val mockGetRecentSearchUseCase: GetRecentSearchUseCase = mockk<GetRecentSearchUseCaseImpl>()
     private val mockkPutRecentSearchUseCase: PutRecentSearchUseCase = mockk<PutRecentSearchUseCaseImpl>()
 
+    // Instance of HomeViewModel under test
     private lateinit var viewModel: HomeViewModel
 
+    /**
+     * Sets up the test environment by setting the main dispatcher.
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setup() {
         Dispatchers.setMain(dispatcher)
     }
 
+    /**
+     * Tears down the test environment by resetting the main dispatcher.
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun tearDown() {
         Dispatchers.resetMain()
     }
 
+    /**
+     * Tests that the [HomeViewModel] fetches and exposes the correct paging data from the repository.
+     */
     @Test
     fun `Should fetch paging data from repository`() = runTest {
+        // Initialize ViewModel with mocked use cases
         viewModel = HomeViewModel(mockGetUniversityUseCase, mockGetRecentSearchUseCase, mockkPutRecentSearchUseCase)
 
         val expectedData = listOf(
@@ -58,14 +75,21 @@ class UniversityViewModelTest {
 
         val paging = PagingData.from(expectedData)
 
-        coEvery { mockGetUniversityUseCase.refreshUniversity() } returns Unit
+        // Mock the use case methods
+        coEvery { mockGetUniversityUseCase.refreshUniversity() } returns Result.success(Unit)
         coEvery { mockGetUniversityUseCase.getUniversities() } returns flowOf(paging)
         coEvery { mockGetRecentSearchUseCase.getRecentSearch() } returns flowOf(listOf())
 
+        // Collect the universities PagingData on Flow as snapshot
         val result = flowOf(viewModel.universities.first()).asSnapshot()
+
+        // Assert that the universities data matches expected data
         assertEquals(expectedData, result)
     }
 
+    /**
+     * Tests that the [HomeViewModel] correctly handles searching for universities.
+     */
     @Test
     fun `Should search university paging data`() = runTest {
         val query = "bagus"
@@ -77,13 +101,16 @@ class UniversityViewModelTest {
 
         val paging = PagingData.from(expectedData)
 
+        // Invoke the search method
         viewModel.search(query)
 
-        coEvery { mockGetUniversityUseCase.refreshUniversity() } returns Unit
+        // Mock the use case methods
+        coEvery { mockGetUniversityUseCase.refreshUniversity() } returns Result.success(Unit)
         coEvery { mockGetUniversityUseCase.searchUniversityByName(query) } returns flowOf(paging)
         coEvery { mockGetRecentSearchUseCase.getRecentSearch() } returns flowOf(listOf())
         coEvery { mockkPutRecentSearchUseCase.putRecentSearch(query) } returns Unit
 
+        // Collect the universities after search
         val result = flowOf(viewModel.universities.first()).asSnapshot()
         assertEquals(expectedData, result)
     }

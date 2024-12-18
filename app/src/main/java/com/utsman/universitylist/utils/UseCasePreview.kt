@@ -8,15 +8,18 @@ import com.utsman.universitylist.domain.api.PutRecentSearchUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-// Fake implementation GetRecentSearchUseCase
+/**
+ * Fake implementation of [GetRecentSearchUseCase] for preview.
+ */
 class FakeGetRecentSearchUseCase : GetRecentSearchUseCase {
     override fun getRecentSearch(): Flow<List<String>> {
         return flowOf(listOf("Universitas A", "Universitas B", "Universitas C"))
     }
 }
 
-
-// Fake implementation GetUniversityUseCase
+/**
+ * Fake implementation of [GetUniversityUseCase] for preview.
+ */
 class FakeGetUniversityUseCase : GetUniversityUseCase {
     private val universities = listOf(
         University(
@@ -41,11 +44,13 @@ class FakeGetUniversityUseCase : GetUniversityUseCase {
         return flowOf(PagingData.from(universities))
     }
 
-    override suspend fun refreshUniversity() {}
+    override suspend fun refreshUniversity() = Result.success(Unit)
 }
 
 
-// Fake implementation PutRecentSearchUseCase
+/**
+ * Fake implementation of [PutRecentSearchUseCase] for preview.
+ */
 class FakePutRecentSearchUseCase : PutRecentSearchUseCase {
     override suspend fun putRecentSearch(query: String) {}
 }
