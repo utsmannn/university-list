@@ -3,14 +3,22 @@ package com.utsman.universitylist.ui.homepage.component
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
@@ -32,6 +40,7 @@ import com.utsman.universitylist.R
 fun ToolbarWithSearchBar(
     modifier: Modifier,
     showShadow: Boolean,
+    recentSearch: List<String>,
     onSearch: (String) -> Unit
 ) {
     var textFieldQuery by remember { mutableStateOf("") }
@@ -102,11 +111,35 @@ fun ToolbarWithSearchBar(
             expanded = expanded,
             onExpandedChange = {
                 expanded = it
-            },
-            colors = SearchBarDefaults.colors(
-                containerColor = Color.Blue
-            )
+            }
         ) {
+
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState())
+            ) {
+
+                for (item in recentSearch) {
+                    ListItem(
+                        headlineContent = {
+                            Text(item)
+                        },
+                        supportingContent = {
+                            Text("Lorem ipsum ...")
+                        },
+                        leadingContent = {
+                            Icon(Icons.Outlined.Info, contentDescription = null)
+                        },
+                        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+                        modifier = Modifier
+                            .clickable {
+                                textFieldQuery = item
+                                expanded = false
+                            }
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                    )
+                }
+            }
 
             // history search
         }

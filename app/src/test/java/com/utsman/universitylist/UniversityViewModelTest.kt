@@ -4,7 +4,9 @@ import androidx.paging.PagingData
 import androidx.paging.testing.asSnapshot
 import com.utsman.universitylist.data.UniversityEntity
 import com.utsman.universitylist.data.mapToDto
+import com.utsman.universitylist.domain.GetRecentSearchUseCase
 import com.utsman.universitylist.domain.GetUniversityUseCase
+import com.utsman.universitylist.domain.PutRecentSearchUseCase
 import com.utsman.universitylist.ui.viewmodel.HomeViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -23,8 +25,12 @@ import org.junit.Test
 
 class UniversityViewModelTest {
 
-    private val useCase = mockk<GetUniversityUseCase>()
     private val dispatcher = StandardTestDispatcher()
+
+    private val mockGetUniversityUseCase = mockk<GetUniversityUseCase>()
+    private val mockGetRecentSearchUseCase = mockk<GetRecentSearchUseCase>()
+    private val mockkPutRecentSearchUseCase = mockk<PutRecentSearchUseCase>()
+
     private lateinit var viewModel: HomeViewModel
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -41,7 +47,7 @@ class UniversityViewModelTest {
 
     @Test
     fun `Should fetch paging data from repository`() = runTest {
-        viewModel = HomeViewModel(useCase)
+        viewModel = HomeViewModel(mockGetUniversityUseCase, mockGetRecentSearchUseCase, mockkPutRecentSearchUseCase)
 
         val expectedData = listOf(
             UniversityEntity(1, "Univ bagus", "bagus.com", "https://bagus.com", "https://image.png"),
@@ -50,8 +56,9 @@ class UniversityViewModelTest {
 
         val paging = PagingData.from(expectedData)
 
-        coEvery { useCase.refreshUniversity() } returns Unit
-        coEvery { useCase.getUniversities() } returns flowOf(paging)
+        coEvery { mockGetUniversityUseCase.refreshUniversity() } returns Unit
+        coEvery { mockGetUniversityUseCase.getUniversities() } returns flowOf(paging)
+        coEvery { mockGetRecentSearchUseCase.getRecentSearch() } returns flowOf(listOf())
 
         val result = flowOf(viewModel.universities.first()).asSnapshot()
         assertEquals(expectedData, result)
@@ -60,7 +67,7 @@ class UniversityViewModelTest {
     @Test
     fun `Should search university paging data`() = runTest {
         val query = "bagus"
-        viewModel = HomeViewModel(useCase)
+        viewModel = HomeViewModel(mockGetUniversityUseCase, mockGetRecentSearchUseCase, mockkPutRecentSearchUseCase)
 
         val expectedData = listOf(
             UniversityEntity(1, "Univ bagus", "bagus.com", "https://bagus.com", "https://image.png"),
@@ -69,8 +76,11 @@ class UniversityViewModelTest {
         val paging = PagingData.from(expectedData)
 
         viewModel.search(query)
-        coEvery { useCase.refreshUniversity() } returns Unit
-        coEvery { useCase.searchUniversityByName(query) } returns flowOf(paging)
+
+        coEvery { mockGetUniversityUseCase.refreshUniversity() } returns Unit
+        coEvery { mockGetUniversityUseCase.searchUniversityByName(query) } returns flowOf(paging)
+        coEvery { mockGetRecentSearchUseCase.getRecentSearch() } returns flowOf(listOf())
+        coEvery { mockkPutRecentSearchUseCase.putRecentSearch(query) } returns Unit
 
         val result = flowOf(viewModel.universities.first()).asSnapshot()
         assertEquals(expectedData, result)

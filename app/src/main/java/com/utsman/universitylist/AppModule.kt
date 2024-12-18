@@ -1,10 +1,13 @@
 package com.utsman.universitylist
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.utsman.universitylist.data.local.UniversityDao
 import com.utsman.universitylist.data.local.UniversityDatabase
+import com.utsman.universitylist.data.local.dataStore
 import com.utsman.universitylist.data.remote.UniversityApiService
 import com.utsman.universitylist.data.repository.UniversityRepository
 import dagger.Module
@@ -60,10 +63,19 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideDataStore(
+        @ApplicationContext context: Context
+    ): DataStore<Preferences> {
+        return context.dataStore
+    }
+
+    @Provides
+    @Singleton
     fun provideRepository(
         universityDao: UniversityDao,
-        universityApiService: UniversityApiService
+        universityApiService: UniversityApiService,
+        dataStore: DataStore<Preferences>
     ): UniversityRepository {
-        return UniversityRepository(universityDao, universityApiService)
+        return UniversityRepository(universityDao, universityApiService, dataStore)
     }
 }

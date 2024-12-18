@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -32,9 +33,10 @@ fun HomePage(
     homeViewModel: HomeViewModel = viewModel()
 ) {
 
-    val universitiesPaged = homeViewModel.universities.collectAsLazyPagingItems()
-
     val context = LocalContext.current
+
+    val universitiesPaged = homeViewModel.universities.collectAsLazyPagingItems()
+    val recentSearch by homeViewModel.recentSearch.collectAsState()
 
     val lazyListState = rememberLazyListState()
     val isScrollReachTop by remember {
@@ -46,6 +48,7 @@ fun HomePage(
             ToolbarWithSearchBar(
                 modifier = Modifier,
                 showShadow = !isScrollReachTop,
+                recentSearch = recentSearch,
                 onSearch = {
                     homeViewModel.search(it)
                 }
