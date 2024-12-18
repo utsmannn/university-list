@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "university")
 data class UniversityEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    var id: Int? = null,
     val name: String,
     val domain: String,
     @ColumnInfo(name = "web_page")
