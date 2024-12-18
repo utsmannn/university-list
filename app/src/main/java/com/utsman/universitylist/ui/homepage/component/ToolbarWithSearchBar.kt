@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.utsman.universitylist.R
 
@@ -88,6 +89,7 @@ fun ToolbarWithSearchBar(
                     onExpandedChange = {
                         expanded = it
                     },
+                    modifier = Modifier.fillMaxWidth(),
                     placeholder = { Text(stringResource(id = R.string.search_bar_hint)) },
                     leadingIcon = {
                         IconButton(
@@ -155,4 +157,19 @@ fun ToolbarWithSearchBar(
         }
 
     }
+}
+
+/**
+ * Preview of the ToolbarWithSearchBar composable.
+ */
+@Composable
+@Preview(showBackground = true)
+fun ToolbarWithSearchBarPreview() {
+    ToolbarWithSearchBar(
+        modifier = Modifier.fillMaxWidth(),
+        showShadow = true,
+        recentSearch = listOf("University A", "University B", "University C"),
+        showSearchResult = false,
+        onSearch = {}
+    )
 }

@@ -21,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -88,4 +89,23 @@ fun UniversityItemContent(
         )
     }
 
+}
+
+/**
+ * Preview of the UniversityItemContent composable.
+ */
+@Composable
+@Preview(showBackground = true)
+fun UniversityItemContentPreview() {
+    val sampleUniversity = University(
+        name = "Sample University",
+        domain = "sample.edu",
+        webPage = "https://www.sample.edu",
+        imageUrl = "https://placehold.co/600x400/green/white?text=SU"
+    )
+    UniversityItemContent(
+        modifier = Modifier.fillMaxWidth(),
+        university = sampleUniversity,
+        onClick = {}
+    )
 }

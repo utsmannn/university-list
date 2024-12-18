@@ -4,9 +4,11 @@ import androidx.paging.PagingData
 import androidx.paging.testing.asSnapshot
 import com.utsman.universitylist.data.UniversityEntity
 import com.utsman.universitylist.data.mapToDto
-import com.utsman.universitylist.domain.GetRecentSearchUseCase
-import com.utsman.universitylist.domain.GetUniversityUseCase
-import com.utsman.universitylist.domain.PutRecentSearchUseCase
+import com.utsman.universitylist.domain.api.GetRecentSearchUseCase
+import com.utsman.universitylist.domain.api.PutRecentSearchUseCase
+import com.utsman.universitylist.domain.impl.GetRecentSearchUseCaseImpl
+import com.utsman.universitylist.domain.impl.GetUniversityUseCaseImpl
+import com.utsman.universitylist.domain.impl.PutRecentSearchUseCaseImpl
 import com.utsman.universitylist.ui.viewmodel.HomeViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -27,9 +29,9 @@ class UniversityViewModelTest {
 
     private val dispatcher = StandardTestDispatcher()
 
-    private val mockGetUniversityUseCase = mockk<GetUniversityUseCase>()
-    private val mockGetRecentSearchUseCase = mockk<GetRecentSearchUseCase>()
-    private val mockkPutRecentSearchUseCase = mockk<PutRecentSearchUseCase>()
+    private val mockGetUniversityUseCase: GetUniversityUseCaseImpl = mockk<GetUniversityUseCaseImpl>()
+    private val mockGetRecentSearchUseCase: GetRecentSearchUseCase = mockk<GetRecentSearchUseCaseImpl>()
+    private val mockkPutRecentSearchUseCase: PutRecentSearchUseCase = mockk<PutRecentSearchUseCaseImpl>()
 
     private lateinit var viewModel: HomeViewModel
 

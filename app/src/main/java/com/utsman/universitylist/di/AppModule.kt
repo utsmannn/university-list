@@ -1,4 +1,4 @@
-package com.utsman.universitylist
+package com.utsman.universitylist.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -10,6 +10,9 @@ import com.utsman.universitylist.data.local.UniversityDatabase
 import com.utsman.universitylist.data.local.dataStore
 import com.utsman.universitylist.data.remote.UniversityApiService
 import com.utsman.universitylist.data.repository.UniversityRepository
+import com.utsman.universitylist.domain.api.GetRecentSearchUseCase
+import com.utsman.universitylist.domain.impl.GetRecentSearchUseCaseImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

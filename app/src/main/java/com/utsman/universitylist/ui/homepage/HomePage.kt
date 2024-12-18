@@ -1,16 +1,12 @@
 package com.utsman.universitylist.ui.homepage
 
-import android.content.Context
-import android.net.Uri
 import androidx.activity.compose.BackHandler
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -25,16 +21,20 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.utsman.universitylist.data.University
 import com.utsman.universitylist.ui.homepage.component.ToolbarWithSearchBar
 import com.utsman.universitylist.ui.homepage.component.UniversityItemContent
+import com.utsman.universitylist.ui.theme.UniversityListTheme
 import com.utsman.universitylist.ui.viewmodel.HomeViewModel
+import com.utsman.universitylist.utils.FakeGetRecentSearchUseCase
+import com.utsman.universitylist.utils.FakeGetUniversityUseCase
+import com.utsman.universitylist.utils.FakePutRecentSearchUseCase
+import com.utsman.universitylist.utils.launchCustomTab
 import kotlinx.coroutines.launch
 
 @Composable
@@ -69,7 +69,7 @@ fun HomePage(
     Scaffold(
         topBar = {
             ToolbarWithSearchBar(
-                modifier = Modifier,
+                modifier = Modifier.fillMaxWidth(),
                 showShadow = !isScrollReachTop,
                 showSearchResult = isSearchResult,
                 recentSearch = recentSearch,
@@ -94,10 +94,12 @@ fun HomePage(
                         is LoadState.Loading -> {
                             LoadingItem()
                         }
+
                         is LoadState.Error -> {
                             val e = universitiesPaged.loadState.refresh as LoadState.Error
                             ErrorItem(message = e.error.localizedMessage ?: "Error")
                         }
+
                         else -> {}
                     }
                 }
@@ -176,7 +178,21 @@ fun ErrorItem(message: String) {
     }
 }
 
-private fun launchCustomTab(context: Context, url: String) {
-    val tabIntent = CustomTabsIntent.Builder().build()
-    tabIntent.launchUrl(context, Uri.parse(url))
+/**
+ * Preview of the HomePage composable.
+ */
+@Composable
+@Preview(showBackground = true)
+fun HomePagePreview() {
+
+    // Sample ViewModel for preview
+    val sampleViewModel = HomeViewModel(
+        getUniversityUseCase = FakeGetUniversityUseCase(),
+        getRecentSearchUseCase = FakeGetRecentSearchUseCase(),
+        putRecentSearchUseCase = FakePutRecentSearchUseCase()
+    )
+
+    UniversityListTheme {
+        HomePage(homeViewModel = sampleViewModel)
+    }
 }

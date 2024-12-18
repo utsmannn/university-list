@@ -3,9 +3,9 @@ package com.utsman.universitylist.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.utsman.universitylist.domain.GetRecentSearchUseCase
-import com.utsman.universitylist.domain.GetUniversityUseCase
-import com.utsman.universitylist.domain.PutRecentSearchUseCase
+import com.utsman.universitylist.domain.api.GetRecentSearchUseCase
+import com.utsman.universitylist.domain.api.GetUniversityUseCase
+import com.utsman.universitylist.domain.api.PutRecentSearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,7 +30,7 @@ class HomeViewModel @Inject constructor(
     private val _isSearchResult = MutableStateFlow(false)
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             getUniversityUseCase.refreshUniversity()
         }
 
