@@ -8,7 +8,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @Suppress("UNCHECKED_CAST")
@@ -17,7 +17,7 @@ class UniversityDaoTest {
     private val mockDao = mockk<UniversityDao>()
 
     @Test
-    fun `Should getAllUniversities successfully`() = runBlocking {
+    fun `Should getAllUniversities successfully`() = runTest {
         val expectedData = listOf(
             UniversityEntity(1, "Univ bagus", "bagus.com","https://bagus.com", "https://image.png"),
             UniversityEntity(2, "Univ keren", "keren.com", "https://keren.com", "https://image.png")
@@ -46,7 +46,7 @@ class UniversityDaoTest {
     }
 
     @Test
-    fun `Should return matching result on searchUniversityByName`() = runBlocking {
+    fun `Should return matching result on searchUniversityByName`() = runTest {
         val searchQuery = "bagus"
         val expectedData = listOf(
             UniversityEntity(1, "Univ bagus", "bagus.com","https://bagus.com", "https://image.png")
@@ -75,7 +75,7 @@ class UniversityDaoTest {
     }
 
     @Test
-    fun `Should return empty result on searchUniversityByName with no matches`() = runBlocking {
+    fun `Should return empty result on searchUniversityByName with no matches`() = runTest {
         val searchQuery = "unknown"
         val expectedData = emptyList<UniversityEntity>()
 
@@ -102,7 +102,7 @@ class UniversityDaoTest {
     }
 
     @Test
-    fun `Should insertUniversities successfully`() = runBlocking {
+    fun `Should insertUniversities successfully`() = runTest {
         val universities = listOf(
             UniversityEntity(1, "Univ bagus", "bagus.com","https://bagus.com", "https://image.png"),
             UniversityEntity(2, "Univ keren", "keren.com", "https://keren.com", "https://image.png")
