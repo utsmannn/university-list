@@ -17,7 +17,7 @@ import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 class UniversityRepositoryTest {
@@ -27,7 +27,7 @@ class UniversityRepositoryTest {
     private val repository = UniversityRepository(mockDao, mockApiService)
 
     @Test
-    fun `Should return paging data from getUniversityPaging`() = runBlocking {
+    fun `Should return paging data from getUniversityPaging`() = runTest {
         val expectedData = listOf(
             UniversityEntity(1, "Univ cakep", "cakep.com", "https://cakep.com", "https://image.png"),
             UniversityEntity(2, "Univ keren", "keren.com", "https://keren.com", "https://image.png")
@@ -60,7 +60,7 @@ class UniversityRepositoryTest {
     }
 
     @Test
-    fun `Should return paging data from searchUniversityPaging`() = runBlocking {
+    fun `Should return paging data from searchUniversityPaging`() = runTest {
         val query = "cakep"
         val expectedData = listOf(
             UniversityEntity(1, "Univ cakep", "cakep.com", "https://cakep.com", "https://image.png")
@@ -93,7 +93,7 @@ class UniversityRepositoryTest {
     }
 
     @Test
-    fun `Should fetch and save universities when database is empty`() = runBlocking {
+    fun `Should fetch and save universities when database is empty`() = runTest {
         coEvery { mockDao.getAllUniversities() } returns mockk<PagingSource<Int, UniversityEntity>> {
             coEvery { load(any()) } returns PagingSource.LoadResult.Page(
                 data = emptyList(),
@@ -131,7 +131,7 @@ class UniversityRepositoryTest {
     }
 
     @Test
-    fun `Should not fetch from API when database is not empty`() = runBlocking {
+    fun `Should not fetch from API when database is not empty`() = runTest {
         coEvery { mockDao.getAllUniversities() } returns mockk<PagingSource<Int, UniversityEntity>> {
             coEvery { load(any()) } returns PagingSource.LoadResult.Page(
                 data = listOf(
