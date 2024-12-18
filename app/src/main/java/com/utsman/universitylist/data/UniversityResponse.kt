@@ -3,7 +3,6 @@ package com.utsman.universitylist.data
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
 data class UniversityResponse(
     @Json(name = "state-province")
     val stateProvince: Any? = null,

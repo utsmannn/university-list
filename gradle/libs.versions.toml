@@ -13,7 +13,9 @@ androidPaging = "3.3.5"
 room = "2.6.1"
 coil3 = "3.0.4"
 googleKsp = "2.0.21-1.0.27"
+okHttp = "4.12.0"
 retrofit = "2.11.0"
+moshi = "1.15.2"
 mockk = "1.13.13"
 constraintLayout = "1.0.1"
 googleBrowserHelper = "2.4.0"
@@ -33,10 +35,12 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintLayout" }
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "daggerHilt" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "androidPaging" }
+androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "androidPaging" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidPaging" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
@@ -47,6 +51,8 @@ coil3-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = 
 coil3-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil3" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
+moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi"}
+okHttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okHttp" }
 google-browserhelper = { module = "com.google.androidbrowserhelper:androidbrowserhelper", version.ref = "googleBrowserHelper" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 

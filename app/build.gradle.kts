@@ -75,6 +75,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
     implementation(libs.dagger.hilt.android)
     ksp(libs.dagger.hilt.compiler)
 
@@ -85,9 +87,12 @@ dependencies {
 
     implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.compose)
+    testImplementation(libs.androidx.paging.testing)
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.okHttp.logging)
 
     implementation(libs.coil3.compose)
     implementation(libs.coil3.okhttp)

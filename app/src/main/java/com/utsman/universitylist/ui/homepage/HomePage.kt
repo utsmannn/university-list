@@ -19,12 +19,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.utsman.universitylist.data.University
 import com.utsman.universitylist.ui.homepage.component.ToolbarWithSearchBar
 import com.utsman.universitylist.ui.homepage.component.UniversityItemContent
+import com.utsman.universitylist.ui.viewmodel.HomeViewModel
 
 @Composable
-fun HomePage() {
+fun HomePage(
+    homeViewModel: HomeViewModel = viewModel()
+) {
 
     val dummyListUniversity = remember {
         listOf(
@@ -39,6 +45,8 @@ fun HomePage() {
             University("Univ cakep 2", "cakep.com", "https://keren.com", "https://placehold.co/600x400/orange/red")
         )
     }
+
+    val universitiesPaged = homeViewModel.universities.collectAsLazyPagingItems()
 
     val context = LocalContext.current
 
@@ -67,15 +75,32 @@ fun HomePage() {
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     state = lazyListState
                 ) {
-                    items(dummyListUniversity) { item ->
-                        UniversityItemContent(
-                            modifier = Modifier.fillMaxWidth(),
-                            university = item,
-                            onClick = {
-                                launchCustomTab(context, item.webPage)
+
+                    items(
+                        count = universitiesPaged.itemCount
+                    ) { index ->
+                        val university = universitiesPaged[index]
+
+                        university?.let {
+                            UniversityItemContent(
+                                modifier = Modifier.fillMaxWidth(),
+                                university = university
+                            ) {
+                                launchCustomTab(context, university.webPage)
                             }
-                        )
+                        }
                     }
+
+
+//                    items(dummyListUniversity) { item ->
+//                        UniversityItemContent(
+//                            modifier = Modifier.fillMaxWidth(),
+//                            university = item,
+//                            onClick = {
+//                                launchCustomTab(context, item.webPage)
+//                            }
+//                        )
+//                    }
                 }
 
             }
