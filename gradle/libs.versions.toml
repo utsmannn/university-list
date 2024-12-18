@@ -40,6 +40,7 @@ androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constr
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "daggerHilt" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "androidPaging" }
+androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "androidPaging" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidPaging" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
