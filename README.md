@@ -1,8 +1,6 @@
 ## University List Android Apps
 
-More detail on PR:
-
-https://github.com/utsmannn/university-list/pull/8
+More detail on PR: https://github.com/utsmannn/university-list/pull/8
 
 **University List** is an Android application designed to display a comprehensive list of
 universities. Leveraging modern Android development practices and robust architectural patterns, the
