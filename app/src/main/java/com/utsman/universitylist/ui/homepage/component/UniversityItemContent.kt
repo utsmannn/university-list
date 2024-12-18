@@ -1,14 +1,10 @@
 package com.utsman.universitylist.ui.homepage.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -16,19 +12,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil3.compose.AsyncImage
-import coil3.compose.AsyncImagePainter
-import coil3.compose.rememberAsyncImagePainter
 import com.utsman.universitylist.data.University
 
+/**
+ * Composable that displays the content of a single university item in the list.
+ *
+ * @param modifier Modifier for styling.
+ * @param university The [University] DTO to display.
+ * @param onClick Callback invoked when the item is clicked.
+ */
 @Composable
 fun UniversityItemContent(
     modifier: Modifier,
@@ -42,6 +43,8 @@ fun UniversityItemContent(
             .background(color = MaterialTheme.colorScheme.primaryContainer)
             .padding(12.dp)
     ) {
+
+        // References for the UI elements
         val (image, title, domain) = createRefs()
 
         AsyncImage(
@@ -88,4 +91,23 @@ fun UniversityItemContent(
         )
     }
 
+}
+
+/**
+ * Preview of the [UniversityItemContent] composable.
+ */
+@Composable
+@Preview(showBackground = true)
+fun UniversityItemContentPreview() {
+    val sampleUniversity = University(
+        name = "Sample University",
+        domain = "sample.edu",
+        webPage = "https://www.sample.edu",
+        imageUrl = "https://placehold.co/600x400/green/white?text=SU"
+    )
+    UniversityItemContent(
+        modifier = Modifier.fillMaxWidth(),
+        university = sampleUniversity,
+        onClick = {}
+    )
 }
