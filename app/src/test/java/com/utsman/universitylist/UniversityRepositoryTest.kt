@@ -142,6 +142,7 @@ class UniversityRepositoryTest {
         // Mocking API response and DB insert
         coEvery { mockApiService.getUniversities() } returns Response.success(apiResponse)
         coEvery { mockDao.insertUniversities(any()) } returns Unit
+        coEvery { mockDao.getCount() } returns 0
 
         // Invoke the method under test
         repository.fetchAndSaveUniversities()
@@ -172,6 +173,7 @@ class UniversityRepositoryTest {
                 nextKey = null
             )
         }
+        coEvery { mockDao.getCount() } returns 1
 
         repository.fetchAndSaveUniversities()
 
