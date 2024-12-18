@@ -31,7 +31,13 @@ fun generateColorCombinations(): List<String> {
 }
 
 fun generateImageUrl(text: String): String {
+    val simplifyText = text.split(" ")
+        .mapNotNull { it.firstOrNull() }
+        .joinToString(" ") {
+            it.uppercase()
+        }
+
     val background = generateColorCombinations().random()
 
-    return "https://placehold.co/600x400/$background?text=$text"
+    return "https://placehold.co/600x400/$background?text=$simplifyText"
 }

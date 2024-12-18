@@ -17,4 +17,7 @@ interface UniversityDao {
 
     @Query("SELECT * FROM university WHERE name LIKE '%' || :query || '%' ORDER BY name ASC")
     fun searchUniversitiesByName(query: String): PagingSource<Int, UniversityEntity>
+
+    @Query("SELECT COUNT(*) FROM university")
+    suspend fun getCount(): Int
 }
