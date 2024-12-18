@@ -7,7 +7,9 @@ import com.utsman.universitylist.domain.GetRecentSearchUseCase
 import com.utsman.universitylist.domain.GetUniversityUseCase
 import com.utsman.universitylist.domain.PutRecentSearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filter
@@ -25,9 +27,10 @@ class HomeViewModel @Inject constructor(
 
     private val _searchQuery = MutableStateFlow("")
     private val _recentSearch = MutableStateFlow(emptyList<String>())
+    private val _isSearchResult = MutableStateFlow(false)
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getUniversityUseCase.refreshUniversity()
         }
 
@@ -49,11 +52,17 @@ class HomeViewModel @Inject constructor(
         }.cachedIn(viewModelScope)
 
     val recentSearch: StateFlow<List<String>> get() = _recentSearch
+    val isSearchResult: StateFlow<Boolean> get() = _isSearchResult
 
     fun search(query: String) = viewModelScope.launch {
         _searchQuery.update { query }
+        putRecentSearchUseCase.putRecentSearch(query)
         if (query.isNotEmpty()) {
             putRecentSearchUseCase.putRecentSearch(query)
         }
+    }
+
+    fun setIsSearchResult(isSearchResult: Boolean) {
+        _isSearchResult.value = isSearchResult
     }
 }

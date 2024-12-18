@@ -15,7 +15,11 @@ import com.utsman.universitylist.data.local.UniversityDao
 import com.utsman.universitylist.data.mapToEntity
 import com.utsman.universitylist.data.remote.UniversityApiService
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
 class UniversityRepository @Inject constructor(
@@ -51,6 +55,8 @@ class UniversityRepository @Inject constructor(
             )
         ) as PagingSource.LoadResult.Page
 
+
+
         if (dataFromDb.data.isEmpty()) {
             val universityApi = apiService.getUniversities()
             val universityEntities = universityApi.map { response -> response.mapToEntity() }
@@ -59,16 +65,25 @@ class UniversityRepository @Inject constructor(
     }
 
     fun getRecentSearch(): Flow<List<String>> {
-        return dataStore.data.map { it[recentSearchKey] }.map { it?.toList().orEmpty() }
+        return dataStore.data.map { it[recentSearchKey] }
+            .filterNotNull()
+            .map { set ->
+                set.toList().filter { query -> query.isNotEmpty() }
+            }
     }
 
     suspend fun addRecentSearch(query: String) {
+        if (query.isEmpty()) return
+
         dataStore.edit { pref ->
             val current = pref[recentSearchKey].orEmpty()
-            if (!current.contains(query)) {
+            if (current.contains(query)) {
                 pref[recentSearchKey] = current.minus(query)
             }
+        }
 
+        dataStore.edit { pref ->
+            val current = pref[recentSearchKey].orEmpty()
             pref[recentSearchKey] = setOf(query) + current
         }
     }

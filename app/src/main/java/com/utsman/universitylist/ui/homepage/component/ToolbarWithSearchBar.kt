@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,6 +25,7 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,6 +43,7 @@ fun ToolbarWithSearchBar(
     modifier: Modifier,
     showShadow: Boolean,
     recentSearch: List<String>,
+    showSearchResult: Boolean,
     onSearch: (String) -> Unit
 ) {
     var textFieldQuery by remember { mutableStateOf("") }
@@ -56,6 +59,12 @@ fun ToolbarWithSearchBar(
         label = "animation_drop_shadow"
     )
 
+    LaunchedEffect(key1 = showSearchResult) {
+        if (!showSearchResult) {
+            textFieldQuery = ""
+            expanded = false
+        }
+    }
 
 
     Column {
@@ -127,12 +136,13 @@ fun ToolbarWithSearchBar(
                             Text("Lorem ipsum ...")
                         },
                         leadingContent = {
-                            Icon(Icons.Outlined.Info, contentDescription = null)
+                            Icon(Icons.Outlined.Refresh, contentDescription = null)
                         },
                         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
                         modifier = Modifier
                             .clickable {
                                 textFieldQuery = item
+                                onSearch.invoke(item)
                                 expanded = false
                             }
                             .fillMaxWidth()

@@ -10,7 +10,7 @@ import com.utsman.universitylist.data.UniversityEntity
 @Dao
 interface UniversityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUniversities(universities: List<UniversityEntity>)
+    suspend fun insertUniversities(universities: List<UniversityEntity>)
 
     @Query("SELECT * FROM university ORDER BY name ASC")
     fun getAllUniversities(): PagingSource<Int, UniversityEntity>
