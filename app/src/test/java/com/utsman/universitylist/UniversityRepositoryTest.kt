@@ -1,5 +1,7 @@
 package com.utsman.universitylist
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
@@ -24,7 +26,8 @@ class UniversityRepositoryTest {
 
     private val mockDao = mockk<UniversityDao>()
     private val mockApiService = mockk<UniversityApiService>()
-    private val repository = UniversityRepository(mockDao, mockApiService)
+    private val mockDataStore = mockk<DataStore<Preferences>>()
+    private val repository = UniversityRepository(mockDao, mockApiService, mockDataStore)
 
     @Test
     fun `Should return paging data from getUniversityPaging`() = runTest {
