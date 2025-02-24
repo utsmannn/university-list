@@ -33,7 +33,7 @@ jobs:
         run: |
           # Print response untuk debug
           RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          https://api.github.com/users/${{ github.event.comment.user.login }}/emails)
+          https://api.github.com/users/${{ github.event.comment.user.login }})
           echo "API Response: $RESPONSE"
     
           # Parse email jika response valid
