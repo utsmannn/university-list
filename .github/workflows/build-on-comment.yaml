@@ -29,10 +29,17 @@ jobs:
       - name: Get User Email
         id: get-email
         run: |
-          EMAIL=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          https://api.github.com/users/${{ github.event.comment.user.login }}/emails \
-          | jq -r '.[] | select(.primary==true) | .email')
-          echo "USER_EMAIL=$EMAIL" >> $GITHUB_ENV
+          # Print response untuk debug
+          RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          https://api.github.com/users/${{ github.event.comment.user.login }}/emails)
+          echo "API Response: $RESPONSE"
+    
+          # Parse email jika response valid
+          EMAIL=$(echo $RESPONSE | jq -r '.[] | select(.primary==true) | .email')
+          echo "Extracted Email: $EMAIL"
+    
+          # Set ke environment
+          echo "EMAIL=$EMAIL" >> $GITHUB_ENV
 
       - name: Log Comment Info
         run: |
