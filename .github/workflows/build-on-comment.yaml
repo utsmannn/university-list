@@ -23,6 +23,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Print object user
+        run: |
+          echo "Full comment user object:"
+          echo "${{ toJSON(github.event.comment.user) }}"
+
       - name: Get User Email
         id: get-email
         run: |
