@@ -36,8 +36,8 @@ jobs:
           https://api.github.com/users/${{ github.event.comment.user.login }})
           echo "API Response: $RESPONSE"
     
-          # Parse email jika response valid
-          EMAIL=$(echo $RESPONSE | jq -r '.[] | select(.primary==true) | .email')
+
+          EMAIL=$(echo $RESPONSE | jq -r '.email')
           echo "Extracted Email: $EMAIL"
     
           # Set ke environment
