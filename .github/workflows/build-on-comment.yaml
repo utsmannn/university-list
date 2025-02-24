@@ -33,12 +33,22 @@ jobs:
           # Use the PR ref from API response
           ref: ${{ fromJson(steps.pr.outputs.data).head.ref }}
 
+
+      - name: Get User Email
+        id: get-email
+        run: |
+          EMAIL=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          https://api.github.com/users/${{ github.event.comment.user.login }}/emails \
+          | jq -r '.[] | select(.primary==true) | .email')
+          echo "USER_EMAIL=$EMAIL" >> $GITHUB_ENV
+
       - name: Log Comment Info
         run: |
           echo "Repository: ${{ github.repository }}"
           echo "Event name: ${{ github.event_name }}"
           echo "Comment body: ${{ github.event.comment.body }}"
           echo "Comment author: ${{ github.event.comment.user.login }}"
+          echo "Comment author email: ${{ env.USER_EMAIL }}"
           echo "PR number: ${{ github.event.issue.number }}"
 
       # Example command handling
