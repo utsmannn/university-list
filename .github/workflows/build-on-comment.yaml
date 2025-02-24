@@ -18,14 +18,6 @@ jobs:
     if: github.event.issue.pull_request
     runs-on: ubuntu-latest
     steps:
-      - name: Get PR Details
-        id: pr
-        uses: octokit/request-action@v2.4.0
-        with:
-          route: GET ${{ github.event.issue.pull_request.url }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -57,3 +49,11 @@ jobs:
         run: |
           echo "Test command detected"
           # Add your test commands here
+
+      - name: Get PR Details
+        id: pr
+        uses: octokit/request-action@v2.4.0
+        with:
+          route: GET ${{ github.event.issue.pull_request.url }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
