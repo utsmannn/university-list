@@ -1,0 +1,25 @@
+name: Code Review
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+  pull_request_review_comment:
+    types: [ created ]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Code Review
+        uses: utsmannn/corivai@v4
+        with:
+          reviewer-api-key: ${{ secrets.REVIEWER_API_KEY }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          openai-url: https://generativelanguage.googleapis.com/v1beta/openai/
+          max-diff-size: 500000
+          model-name: gemini-1.5-flash

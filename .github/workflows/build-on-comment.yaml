@@ -1,0 +1,60 @@
+name: PR Comment Workflow
+
+on:
+  issue_comment:
+    types:
+      - created
+      - edited
+
+permissions:
+  pull-requests: write
+  issues: write
+  contents: read
+
+jobs:
+  pr_comment:
+    name: PR Comment Job
+    # Only run on PR comments, skip regular issue comments
+    if: github.event.issue.pull_request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Print object user
+        run: |
+          echo "Full comment user object:"
+          echo "${{ toJSON(github.event.comment.user) }}"
+
+      - name: Get User Email
+        id: get-email
+        run: |
+          # Print response untuk debug
+          RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          https://api.github.com/users/${{ github.event.comment.user.login }})
+          echo "API Response: $RESPONSE"
+    
+
+          EMAIL=$(echo $RESPONSE | jq -r '.email')
+          echo "Extracted Email: $EMAIL"
+    
+          # Set ke environment
+          echo "EMAIL=$EMAIL" >> $GITHUB_ENV
+
+      - name: Log Comment Info
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          echo "Event name: ${{ github.event_name }}"
+          echo "Comment body: ${{ github.event.comment.body }}"
+          echo "Comment author: ${{ github.event.comment.user.login }}"
+          echo "Comment author email: ${{ env.USER_EMAIL }}"
+          echo "PR number: ${{ github.event.issue.number }}"
+
+      # Example command handling
+      - name: Process Commands
+        if: contains(github.event.comment.body, '/test')
+        run: |
+          echo "Test command detected"
+          # Add your test commands here
