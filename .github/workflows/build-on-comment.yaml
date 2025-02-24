@@ -22,9 +22,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # Use the PR ref from API response
-          ref: ${{ fromJson(steps.pr.outputs.data).head.ref }}
-
 
       - name: Get User Email
         id: get-email
